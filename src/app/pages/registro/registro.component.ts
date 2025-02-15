@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/service/anthx.service';
-import { Usuario } from '../../interface/Usuario';
-import { Empleado } from '../../interface/empleado';
+import { AuthService } from '../../service/anthx.service'; // Asegúrate de que el servicio esté bien importado
+import { Usuario } from '../../interface/Usuario'; // Asegúrate de que tienes la interfaz de Usuario
 
 @Component({
   selector: 'app-registro',
@@ -17,17 +16,10 @@ export class RegistroComponent {
   apellido: string = '';
   fechaNacimiento: string = '';
 
-  // Datos del empleado
-  idEmpleado: string = '';
-  puesto: string = '';
-  salario: number = 0;
-  fechaContratacion: string = '';
-  departamento: string = '';
-
   constructor(private authService: AuthService) {}
 
-  // Método para registrar usuario
-  registrarUsuario() {
+  // Método para registrar un usuario
+  registrarUsuario(): void {
     const usuario: Usuario = {
       nombreUsuario: this.nombreUsuario,
       contrasena: this.contrasena,
@@ -36,22 +28,8 @@ export class RegistroComponent {
       apellido: this.apellido,
       fechaNacimiento: this.fechaNacimiento
     };
-    this.authService.registrarUsuario(usuario); // Registrar el usuario
-  }
-
-  // Método para registrar empleado
-  registrarEmpleado() {
-    const empleado: Empleado = {
-      idEmpleado: this.idEmpleado,
-      nombre: this.nombre,
-      apellido: this.apellido,
-      correoElectronico: this.correoElectronico,
-      fechaNacimiento: this.fechaNacimiento,
-      puesto: this.puesto,
-      salario: this.salario,
-      fechaContratacion: this.fechaContratacion,
-      departamento: this.departamento
-    };
-    this.authService.registrarEmpleado(empleado); // Registrar el empleado
+    
+    // Llamamos al servicio para registrar el usuario
+    this.authService.registrarUsuario(usuario);
   }
 }

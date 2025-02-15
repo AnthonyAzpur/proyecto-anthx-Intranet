@@ -1,0 +1,61 @@
+/* Asegura que html y body ocupen el 100% */
+html, body {
+    height: 100%; /* Asegura que html y body tengan 100% de altura */
+    margin: 0; /* Elimina cualquier margen predeterminado */
+    padding: 0; /* Elimina cualquier relleno predeterminado */
+  }
+  
+  /* Contenedor principal con la imagen de fondo */
+  .dashboard-container {
+   
+    width: 100%;
+    background-size: cover;  /* Asegura que la imagen cubra todo el contenedor */
+    background-position: center;  /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    height: 100vh; /* Hace que ocupe todo el alto de la ventana */
+    display: flex;
+    justify-content: center;  /* Centra los botones horizontalmente */
+    align-items: center;  /* Centra los botones verticalmente */
+  }
+  
+  /* Contenedor de botones */
+  .button-container {
+    display: flex;
+    justify-content: space-around;  /* Distribuye los botones de manera uniforme */
+    width: 100%;  /* Asegura que ocupe todo el ancho disponible */
+    max-width: 600px;  /* Puedes limitar el ancho si lo prefieres */
+    margin-top: 50px; /* Ajusta el margen superior según lo necesites */
+  }
+  
+  /* Estilo de cada botón */
+  .dashboard-btn {
+    background-color: rgba(255, 255, 255, 0.8);  /* Fondo semitransparente */
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    width: 120px; /* Fijar el tamaño de cada botón */
+    height: 120px; /* Fijar el tamaño de cada botón */
+    margin: 0 10px; /* Espacio entre los botones */
+  }
+  
+  .dashboard-btn:hover {
+    transform: scale(1.05);  /* Efecto de zoom al pasar el cursor */
+  }
+  
+  .dashboard-img {
+    width: 40px;  /* Tamaño de la imagen */
+    height: 40px;
+    margin-bottom: 8px; /* Espacio entre la imagen y el texto */
+  }
+  
+  .dashboard-btn span {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  

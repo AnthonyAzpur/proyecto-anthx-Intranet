@@ -1,23 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Usuario } from '../interface/Usuario'; // Importamos la interfaz Usuario
-import { Empleado } from '../interface/empleado'; // Importamos la interfaz Empleado
-import Swal from 'sweetalert2'; // Importamos SweetAlert2
-import { Router } from '@angular/router'; // Importamos Router
+import { Usuario } from '../interface/Usuario';
+import { Empleado } from '../interface/empleado';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  // Arrays para almacenar usuarios y empleados
-  private usuarios: Usuario[] = JSON.parse(localStorage.getItem('usuarios') || '[]'); // Cargar usuarios desde localStorage
-  private empleados: Empleado[] = JSON.parse(localStorage.getItem('empleados') || '[]'); // Cargar empleados desde localStorage
+  private usuarioAutenticadoSubject = new BehaviorSubject<Usuario | null>(this.obtenerUsuarioAutenticado());
+  public usuarioAutenticado$ = this.usuarioAutenticadoSubject.asObservable();
 
-  // Inyectamos el Router en el constructor
-  constructor(private router: Router) {}
+  private usuarios: Usuario[] = JSON.parse(localStorage.getItem('usuarios') || '[]');
+  private empleados: Empleado[] = JSON.parse(localStorage.getItem('empleados') || '[]');
+
+  constructor(public router: Router) {
+    // Cargar algunos empleados predefinidos al inicio
+    if (this.empleados.length === 0) {
+      this.cargarEmpleadosPredefinidos();
+    }
+  }
 
   // Método para registrar un usuario
   registrarUsuario(usuario: Usuario): void {
-    // Validaciones
     if (this.camposVacios(usuario)) {
       Swal.fire({
         icon: 'error',
@@ -27,7 +33,6 @@ export class AuthService {
       return;
     }
 
-    // Verificar si el usuario ya existe
     const usuarioExistente = this.usuarios.find(u => u.nombreUsuario === usuario.nombreUsuario);
     if (usuarioExistente) {
       Swal.fire({
@@ -38,86 +43,103 @@ export class AuthService {
       return;
     }
 
-    // Si no existe, lo agregamos
     this.usuarios.push(usuario);
-    localStorage.setItem('usuarios', JSON.stringify(this.usuarios)); // Guardar en localStorage
+    localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
     Swal.fire({
       icon: 'success',
       title: 'Registro exitoso',
       text: 'El usuario se ha registrado correctamente.',
     });
 
-    // Redirigir al login después de un registro exitoso
-    this.router.navigate(['/login']); // Redirige a la página de login
-    console.log('Usuario registrado:', usuario); // Imprimir en consola los datos del nuevo usuario
+    this.router.navigate(['/login']);
+  }
+// Método para registrar un empleado
+registrarEmpleado(empleado: Empleado): void {
+  // Generar automáticamente el idEmpleado si no está presente
+  if (!empleado.idEmpleado) {
+    empleado.idEmpleado = this.generarIdEmpleado();
   }
 
-  // Método para registrar un empleado
-  registrarEmpleado(empleado: Empleado): void {
-    // Validaciones
-    if (this.camposVaciosEmpleado(empleado)) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Campos vacíos',
-        text: 'Por favor, complete todos los campos.',
-      });
-      return;
-    }
-
-    // Verificar si el empleado ya existe
-    const empleadoExistente = this.empleados.find(e => e.idEmpleado === empleado.idEmpleado);
-    if (empleadoExistente) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'El empleado ya está registrado.',
-      });
-      return;
-    }
-
-    // Si no existe, lo agregamos
-    this.empleados.push(empleado);
-    localStorage.setItem('empleados', JSON.stringify(this.empleados)); // Guardar en localStorage
+  // Validación de campos vacíos
+  if (this.camposVaciosEmpleado(empleado)) {
     Swal.fire({
-      icon: 'success',
-      title: 'Empleado registrado',
-      text: 'El empleado se ha registrado correctamente.',
+      icon: 'error',
+      title: 'Campos vacíos',
+      text: 'Por favor, complete todos los campos.',
     });
+    return;
+  }
 
-    // Redirigir al login después de un registro exitoso
-    this.router.navigate(['/login']); // Redirige a la página de login
-    console.log('Empleado registrado:', empleado); // Imprimir en consola los datos del nuevo empleado
+  // Verificar si el empleado ya existe por el correo electrónico (o idEmpleado si es único)
+  const empleadoExistente = this.empleados.find(e => e.idEmpleado === empleado.idEmpleado || e.correoElectronico === empleado.correoElectronico);
+  if (empleadoExistente) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Empleado ya registrado',
+      text: 'El empleado con este ID o correo electrónico ya está registrado.',
+    });
+    return;
+  }
+
+  // Registrar el nuevo empleado
+  this.empleados.push(empleado);
+  localStorage.setItem('empleados', JSON.stringify(this.empleados));
+
+  // Mensaje de éxito
+  Swal.fire({
+    icon: 'success',
+    title: 'Empleado registrado',
+    text: 'El empleado se ha registrado correctamente.',
+  });
+
+  // Navegar al dashboard después de registrar el empleado
+  this.router.navigate(['/dashboard']);
+}
+
+  // Método para obtener todos los empleados
+  obtenerEmpleados(): Empleado[] {
+    return this.empleados; // Retorna la lista de empleados cargada desde localStorage
   }
 
   // Método para iniciar sesión (autenticación de usuario)
   login(nombreUsuario: string, contrasena: string): boolean {
     const usuario = this.usuarios.find(u => u.nombreUsuario === nombreUsuario && u.contrasena === contrasena);
     if (usuario) {
-      localStorage.setItem('usuarioAutenticado', JSON.stringify(usuario)); // Guardar el usuario autenticado en localStorage
-      console.log('Inicio de sesión exitoso');
-      return true; // Si encontramos el usuario, la autenticación es exitosa
+      localStorage.setItem('usuarioAutenticado', JSON.stringify(usuario));
+      this.usuarioAutenticadoSubject.next(usuario);  // Emitimos el nuevo usuario autenticado
+      Swal.fire({
+        icon: 'success',
+        title: 'Inicio de sesión exitoso',
+        text: 'Bienvenido!',
+      });
+      return true;
     }
     Swal.fire({
       icon: 'error',
       title: 'Error',
       text: 'Usuario o contraseña incorrectos',
     });
-    console.log('Usuario o contraseña incorrectos');
-    return false; // Si no encontramos el usuario, la autenticación falla
+    return false;
   }
 
   // Método para verificar si el usuario está autenticado
   estaAutenticado(): boolean {
-    return localStorage.getItem('usuarioAutenticado') !== null;
+    return this.usuarioAutenticadoSubject.value !== null;
   }
 
   // Método para cerrar sesión
   cerrarSesion(): void {
     localStorage.removeItem('usuarioAutenticado');
-    console.log('Cierre de sesión exitoso');
+    this.usuarioAutenticadoSubject.next(null);  // Emitimos un valor null cuando el usuario cierra sesión
+    Swal.fire({
+      icon: 'success',
+      title: 'Cierre de sesión exitoso',
+      text: '¡Hasta pronto!',
+    });
+    this.router.navigate(['/login']);
   }
 
-  // Método adicional para obtener el usuario autenticado
+  // Método para obtener el usuario autenticado
   obtenerUsuarioAutenticado(): Usuario | null {
     return JSON.parse(localStorage.getItem('usuarioAutenticado') || 'null');
   }
@@ -127,8 +149,49 @@ export class AuthService {
     return !usuario.nombreUsuario || !usuario.contrasena || !usuario.correoElectronico || !usuario.nombre || !usuario.apellido || !usuario.fechaNacimiento;
   }
 
-  // Método de validación de campos vacíos para empleado
+  // Método para validar los campos vacíos del empleado
   private camposVaciosEmpleado(empleado: Empleado): boolean {
-    return !empleado.idEmpleado || !empleado.nombre || !empleado.apellido || !empleado.puesto || !empleado.salario || !empleado.fechaContratacion || !empleado.departamento || !empleado.correoElectronico || !empleado.fechaNacimiento;
+    return !empleado.nombre || !empleado.apellido || !empleado.puesto || !empleado.salario || !empleado.fechaContratacion || !empleado.departamento;
+  }
+
+  // Método para generar un ID de empleado único (puedes personalizar la lógica)
+  private generarIdEmpleado(): string {
+    const nuevoId = 'EMP' + new Date().getTime(); // Genera un ID único basado en la fecha
+    return nuevoId;
+  }
+
+  // Cargar algunos empleados predefinidos
+  private cargarEmpleadosPredefinidos(): void {
+    const empleadosPredefinidos: Empleado[] = [
+      {
+        idEmpleado: 'E001',
+        nombre: 'Juan',
+        apellido: 'Pérez',
+        puesto: 'Desarrollador',
+        salario: 3500,
+        fechaContratacion: '2021-01-15',
+        departamento: 'Tecnología',
+        correoElectronico: 'juan.perez@empresa.com',
+        fechaNacimiento: '1990-05-10',
+      },
+      {
+        idEmpleado: 'E002',
+        nombre: 'Ana',
+        apellido: 'González',
+        puesto: 'Gerente de Ventas',
+        salario: 4500,
+        fechaContratacion: '2019-04-22',
+        departamento: 'Ventas',
+        correoElectronico: 'ana.gonzalez@empresa.com',
+        fechaNacimiento: '1985-07-20',
+      },
+      // Agrega más empleados predefinidos si es necesario
+    ];
+
+    // Si no hay empleados registrados, agregar los predefinidos
+    if (this.empleados.length === 0) {
+      this.empleados.push(...empleadosPredefinidos);
+      localStorage.setItem('empleados', JSON.stringify(this.empleados));  // Guardar en localStorage
+    }
   }
 }

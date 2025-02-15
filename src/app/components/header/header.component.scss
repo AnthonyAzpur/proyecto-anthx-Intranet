@@ -1,0 +1,26 @@
+// Navbar custom styles
+
+.custom-navbar {
+    background-color: #371d6b;  // Color morado oscuro
+    font-family: 'Poppins', sans-serif; // Cambia la fuente a Poppins, puedes usar cualquier otra fuente que prefieras
+  
+    // Para los textos en el navbar
+    .navbar-text {
+      color: #fff;  // Cambiar el color del texto a blanco
+      font-size: 1.1rem;  // Puedes ajustar el tamaño de la fuente
+      font-weight: 500;  // Darle algo de peso a la fuente
+    }
+  
+    // Logo de la navbar
+    .navbar-brand img {
+      height: 70px;  // Ajusta el tamaño de la imagen del logo si es necesario
+    }
+  
+ 
+    // Opcional: Cambiar color del texto del usuario en el navbar
+    .custom-text {
+        font-family: 'Bebas Neue', sans-serif;  // Cambia a una fuente serif (como 'Lora')
+      font-size: 1.2rem;
+    }
+  }
+  
