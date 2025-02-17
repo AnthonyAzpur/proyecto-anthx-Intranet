@@ -1,10 +1,21 @@
-<!-- Header -->
-<app-header></app-header>
+<!-- Contenedor principal -->
+<div class="container-fluid" style="background-image: url('/assets/img/fondo.jpg'); background-size: cover; ;">
+  <div class="row d-flex flex-column" style="height: 100%;">  <!-- Usamos flexbox en la fila -->
 
-<div class="container-fluid" style="background-image: url('/assets/img/fondo.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-  <!-- Contenedor principal -->
-  <router-outlet></router-outlet>
+    <!-- Header -->
+    <div class="col-12">
+      <app-header></app-header>
+    </div>
+
+    <!-- Router - crece según el contenido y tiene un mínimo de altura de 1000px -->
+    <div class="col-12" style="background-image: url('/assets/img/fondo.jpg'); background-size: cover; flex-grow: 1; overflow-y: auto; min-height: 500px; padding-left: 0; padding-right: 0;">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- Footer -->
+    <div class="col-12" style="height: 20%; padding-left: 0; padding-right: 0;">
+      <app-footer></app-footer>
+    </div>
+
+  </div>
 </div>
-
-<!-- Footer -->
-<app-footer></app-footer>

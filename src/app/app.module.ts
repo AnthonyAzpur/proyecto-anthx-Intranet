@@ -7,7 +7,7 @@ import { RegistroComponent } from './pages/registro/registro.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
-import { AddPersonalComponent } from './pages/add-personal/add-personal.component';
+
 import { AsistenciaComponent } from './pages/asistencia/asistencia.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MenudashComponent } from './components/menudash/menudash.component';
@@ -24,8 +24,6 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     RegistroComponent,
     LoginComponent,
     DashboardComponent,
-
-    AddPersonalComponent,
     AsistenciaComponent,
     HeaderComponent,
     MenudashComponent,
