@@ -40,4 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.authSubscription.unsubscribe();  // Limpiar la suscripción
     }
   }
+  goTodashcoard() {
+    this.router.navigate(['/anthx/dashboard']);
+  }
 }

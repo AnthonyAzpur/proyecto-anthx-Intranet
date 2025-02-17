@@ -1,0 +1,96 @@
+.container {
+  background-color: #f8f9fa;  // Fondo suave para la página
+  border-radius: 10px;         // Bordes redondeados
+  padding: 30px;               // Espaciado alrededor
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  // Sombra sutil
+  margin-top: 50px;
+}
+
+.text-center {
+  font-size: 1.5rem;  // Aumentar tamaño de la fuente para el título
+  font-weight: 600;   // Hacerlo más llamativo
+  margin-bottom: 20px;
+  color: #333;        // Color de texto oscuro para mejor legibilidad
+}
+
+.table-container {
+  margin-top: 30px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;  // Elimina el espacio entre celdas
+  background-color: #fff;     // Fondo blanco para la tabla
+  border-radius: 8px;         // Bordes redondeados para la tabla
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  // Sombra para la tabla
+}
+
+th, td {
+  padding: 12px;              // Espaciado en las celdas
+  text-align: center;         // Centrar texto
+  font-size: 1rem;            // Tamaño de fuente moderado
+}
+
+th {
+  background-color: #007bff;  // Color de fondo azul para los encabezados
+  color: white;               // Color blanco para el texto
+}
+
+td {
+  background-color: #f9f9f9;  // Fondo suave para las celdas
+}
+
+tr:nth-child(even) td {
+  background-color: #e9ecef;  // Fondo gris claro para filas pares
+}
+
+tr:hover td {
+  background-color: #f1f1f1;  // Fondo gris cuando pasas el ratón sobre una fila
+  cursor: pointer;            // Cambiar el cursor para indicar interactividad
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.d-flex {
+  justify-content: center;
+}
+
+.mt-3 {
+  margin-top: 20px;  // Separación entre el botón de guardar y la tabla
+}
+
+.mt-5 {
+  margin-top: 50px;
+}

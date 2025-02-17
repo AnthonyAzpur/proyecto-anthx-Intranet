@@ -1,32 +1,10 @@
 import { Component } from '@angular/core';
 import { Empleado } from '../../interface/empleado'; // Importa la interfaz Empleado
 import * as XLSX from 'xlsx';  // Importamos la librería XLSX
+import Swal from 'sweetalert2';  // Importamos SweetAlert2
 
 // Lista de empleados de ejemplo
-const EMPLEADOS: Empleado[] = [
-  {
-    idEmpleado: 'E001',
-    nombre: 'Juan',
-    apellido: 'Pérez',
-    puesto: 'Desarrollador',
-    salario: 3500,
-    fechaContratacion: '2020-01-15',
-    departamento: 'Tecnología',
-    correoElectronico: 'juan.perez@empresa.com',
-    fechaNacimiento: '1985-06-10'
-  },
-  {
-    idEmpleado: 'E002',
-    nombre: 'Ana',
-    apellido: 'Gómez',
-    puesto: 'Diseñadora Gráfica',
-    salario: 3000,
-    fechaContratacion: '2019-07-20',
-    departamento: 'Diseño',
-    correoElectronico: 'ana.gomez@empresa.com',
-    fechaNacimiento: '1990-04-22'
-  },
-];
+const EMPLEADOS: Empleado[] = [];
 
 @Component({
   selector: 'app-empleado',
@@ -55,6 +33,13 @@ export class EmpleadoComponent {
     
     // Guardar empleados en localStorage
     localStorage.setItem('empleados', JSON.stringify(this.empleados));
+
+    // SweetAlert para indicar que los empleados se guardaron correctamente
+    Swal.fire({
+      icon: 'success',
+      title: '¡Éxito!',
+      text: 'Empleados guardados correctamente.',
+    });
     console.log('Empleados guardados en localStorage');
   }
 
@@ -64,6 +49,13 @@ export class EmpleadoComponent {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Empleados');
     XLSX.writeFile(wb, 'empleados.xlsx');
+
+    // SweetAlert para indicar que el archivo Excel fue descargado
+    Swal.fire({
+      icon: 'info',
+      title: '¡Descarga Completada!',
+      text: 'Los datos de los empleados se descargaron como un archivo Excel.',
+    });
   }
 
   // Función para cargar datos desde un archivo Excel
@@ -75,19 +67,46 @@ export class EmpleadoComponent {
       reader.onload = () => {
         const data = new Uint8Array(reader.result as ArrayBuffer);
         const wb = XLSX.read(data, { type: 'array' });
-        const ws = wb.Sheets[wb.SheetNames[0]];
+        const ws = wb.Sheets[wb.SheetNames[0]]; // Leemos la primera hoja
         const json = XLSX.utils.sheet_to_json(ws);
         
         // Actualizar los empleados con los datos cargados desde el archivo Excel
         this.empleados = json as Empleado[];
+
+        // SweetAlert para indicar que el archivo fue cargado
+        Swal.fire({
+          icon: 'success',
+          title: '¡Datos Cargados!',
+          text: 'Los empleados fueron cargados desde el archivo Excel.',
+        });
       };
     }
   }
 
   // Función para eliminar un empleado
   eliminarEmpleado(idEmpleado: string) {
-    this.empleados = this.empleados.filter(emp => emp.idEmpleado !== idEmpleado);
-    localStorage.setItem('empleados', JSON.stringify(this.empleados)); // Guardar el cambio en localStorage
+    // Usamos SweetAlert para confirmar antes de eliminar
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esta acción!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '¡Sí, eliminarlo!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.empleados = this.empleados.filter(emp => emp.idEmpleado !== idEmpleado);
+        localStorage.setItem('empleados', JSON.stringify(this.empleados)); // Guardar el cambio en localStorage
+
+        // SweetAlert para indicar que el empleado fue eliminado
+        Swal.fire(
+          '¡Eliminado!',
+          'El empleado ha sido eliminado.',
+          'success'
+        );
+      }
+    });
   }
 
   // Definimos trackEmpleadoId para mejorar el rendimiento con *ngFor

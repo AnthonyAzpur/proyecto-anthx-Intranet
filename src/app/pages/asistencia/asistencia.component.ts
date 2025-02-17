@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 
 interface Empleado {
   idEmpleado: string;
@@ -63,12 +64,18 @@ export class AsistenciaComponent implements OnInit {
       horaSalida: empleado.horaSalida,
       asistio: empleado.horaEntrada && empleado.horaSalida ? true : false
     }));
-
+  
     // Guardamos la asistencia en localStorage
     localStorage.setItem('asistencia', JSON.stringify(asistencia));
-
-    // Muestra un mensaje indicando que la asistencia fue guardada
+  
+    // Muestra un mensaje indicando que la asistencia fue guardada usando SweetAlert2
+    Swal.fire({
+      icon: 'success',
+      title: '¡Asistencia guardada!',
+      text: 'La asistencia ha sido guardada correctamente.',
+      confirmButtonText: 'Aceptar'
+    });
+  
     console.log('Asistencia guardada', asistencia);
-    alert('Asistencia guardada correctamente');
   }
 }

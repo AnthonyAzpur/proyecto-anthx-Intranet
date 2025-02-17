@@ -83,16 +83,13 @@ export class DashboardComponent implements OnInit {
 
   // Navegar a la página de asistencia
   goToAsistencia() {
-    this.router.navigate(['/asistencia']);
+    this.router.navigate(['/anthx/asistencia']);
   }
 
   // Navegar a la página de añadir personal
   goToPersonal() {
-    this.router.navigate(['/empleado']);
+    this.router.navigate(['/anthx/empleado']);
   }
 
-  // Navegar a la página de usuarios
-  goToUsuarios() {
-    this.router.navigate(['/list-usuarios']);
-  }
+ 
 }

@@ -20,7 +20,7 @@ export class LoginComponent {
 
     if (isAuthenticated) {
       // Si la autenticación es exitosa, navega al dashboard
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/anthx/dashboard']);
     } else {
       // Si la autenticación falla, muestra un mensaje de error
       this.errorMessage = 'Usuario o contraseña incorrectos';

@@ -163,28 +163,7 @@ registrarEmpleado(empleado: Empleado): void {
   // Cargar algunos empleados predefinidos
   private cargarEmpleadosPredefinidos(): void {
     const empleadosPredefinidos: Empleado[] = [
-      {
-        idEmpleado: 'E001',
-        nombre: 'Juan',
-        apellido: 'Pérez',
-        puesto: 'Desarrollador',
-        salario: 3500,
-        fechaContratacion: '2021-01-15',
-        departamento: 'Tecnología',
-        correoElectronico: 'juan.perez@empresa.com',
-        fechaNacimiento: '1990-05-10',
-      },
-      {
-        idEmpleado: 'E002',
-        nombre: 'Ana',
-        apellido: 'González',
-        puesto: 'Gerente de Ventas',
-        salario: 4500,
-        fechaContratacion: '2019-04-22',
-        departamento: 'Ventas',
-        correoElectronico: 'ana.gonzalez@empresa.com',
-        fechaNacimiento: '1985-07-20',
-      },
+      
       // Agrega más empleados predefinidos si es necesario
     ];
 
