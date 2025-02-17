@@ -15,6 +15,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { EmpleadoComponent } from './pages/empleado/empleado.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
+
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { EmpleadoComponent } from './pages/empleado/empleado.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    NgApexchartsModule,
+
     
   ],
   providers: [],

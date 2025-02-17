@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'personal', component: EmpleadoComponent, canActivate: [AuthGuard] },
+  { path: 'empleado', component: EmpleadoComponent, canActivate: [AuthGuard] },
   { path: 'add-personal', component: AddPersonalComponent, canActivate: [AuthGuard] },  // Ruta para añadir personal
   { path: 'asistencia', component: AsistenciaComponent, canActivate: [AuthGuard] },  // Ruta para asistencia
   { path: 'list-usuarios', component: UsuariosComponent, canActivate: [AuthGuard] },  // Ruta para listar usuarios

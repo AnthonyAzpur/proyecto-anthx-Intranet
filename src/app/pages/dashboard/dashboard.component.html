@@ -1,11 +1,13 @@
 <div class="dashboard-container">
+  <!-- Fondo blanco semi-transparente -->
+  <div class="background-overlay">
     <div class="button-container">
       <button class="dashboard-btn" (click)="goToAsistencia()">
-        <img src="assets/img/attendance-icon.png" alt="Asistencia" class="dashboard-img" />
+        <img src="assets/img/asistencia.png" alt="Asistencia" class="dashboard-img" />
         <span>Asistencia</span>
       </button>
       <button class="dashboard-btn" (click)="goToPersonal()">
-        <img src="assets/img/person-icon.png" alt="Personal" class="dashboard-img" />
+        <img src="assets/img/empleado.png" alt="Personal" class="dashboard-img" />
         <span>Personal</span>
       </button>
       <button class="dashboard-btn" (click)="goToUsuarios()">
@@ -13,5 +15,26 @@
         <span>Usuarios</span>
       </button>
     </div>
+
+    <!-- Mostrar la cantidad de asistentes y faltantes -->
+    <div class="stats-container">
+      <div class="stats-box">
+        <h2 class="stats-title">Asistentes</h2>
+        <p class="stats-number">{{ asistentes }}</p>
+      </div>
+      <div class="stats-box">
+        <h2 class="stats-title">Faltantes</h2>
+        <p class="stats-number">{{ faltantes }}</p>
+      </div>
+    </div>
+
+    <!-- Gráfico de asistencia -->
+    <h2>Asistencia de Hoy: {{ todayDate }}</h2>
+    <apx-chart
+      [series]="attendanceSeries"
+      [chart]="attendanceChart"
+      [xaxis]="attendanceXaxis"
+      [dataLabels]="{ enabled: true }">
+    </apx-chart>
   </div>
-  
+</div>
